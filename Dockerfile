@@ -7,9 +7,6 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install dependencies
-RUN npm init -y && npm install
-
 # Expose the port (dynamic, defined in Docker run)
 EXPOSE $PORT
 
