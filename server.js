@@ -1,13 +1,13 @@
 const http = require('http');
 
-// Access environment variables for message and port
-const responseMessage = process.env.RESPONSE_MESSAGE || 'Hello World';
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+const RESPONSE_MESSAGE = process.env.RESPONSE_MESSAGE || 'Default message';
 
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end(responseMessage + '\n');
-}).listen(port, '0.0.0.0');
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end(RESPONSE_MESSAGE);
+});
 
-console.log(`Server running at http://0.0.0.0:${port}/`);
-
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});

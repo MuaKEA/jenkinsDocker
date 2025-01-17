@@ -1,15 +1,18 @@
-# Use an official Node.js runtime as a parent image
 FROM node:18
 
-# Set the working directory in the container
 WORKDIR /app
-
-# Copy the current directory contents into the container at /app
 COPY . /app
 
-# Expose the port (dynamic, defined in Docker run)
-EXPOSE $PORT
+# Add build arguments
+ARG RESPONSE_MESSAGE
+ARG PORT
 
-# Run the server
+# Set environment variables using the build arguments
+ENV RESPONSE_MESSAGE=${RESPONSE_MESSAGE}
+ENV PORT=${PORT}
+
+# Expose the port
+EXPOSE ${PORT}
+
+# Start the application
 CMD ["node", "server.js"]
-
