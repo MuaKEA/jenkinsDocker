@@ -13,13 +13,13 @@ pipeline {
             steps {
                 script {
                     sh """
-                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_1} --build-arg PORT=${PORT_1} -t name:container1 .
+                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_1} --build-arg PORT=${PORT_1} -t container1:latest .
                     """
                     sh """
-                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_2} --build-arg PORT=${PORT_2} -t name:container2 .
+                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_2} --build-arg PORT=${PORT_2} -t container2:latest .
                     """
                     sh """
-                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_3} --build-arg PORT=${PORT_3} -t name:container3 .
+                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_3} --build-arg PORT=${PORT_3} -t container3:latest .
                     """
                 }
             }
@@ -27,9 +27,9 @@ pipeline {
         stage('Run Containers') {
             steps {
                 script {
-                    sh 'docker run -d -p 3000:3000 name:container1'
-                    sh 'docker run -d -p 3001:3001 name:container2'
-                    sh 'docker run -d -p 3002:3002 name:container3'
+                    sh 'docker run -d -p 3000:3000 container1:latest'
+                    sh 'docker run -d -p 3001:3001 container2:latest'
+                    sh 'docker run -d -p 3002:3002 container3:latest'
                 }
             }
         }
@@ -45,4 +45,3 @@ pipeline {
         }
     }
 }
-
