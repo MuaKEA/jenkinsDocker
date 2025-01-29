@@ -1,45 +1,21 @@
 pipeline {
     agent any
     environment {
-        RESPONSE_1 = '"Hello from Container 1"'
-        RESPONSE_2 = '"Hello from Container 2"'
-        RESPONSE_3 = '"Hello from Container 3"'
-        PORT_1 = '"3000"'
-        PORT_2 = '"3001"'
-        PORT_3 = '"3002"'
+        PATH = "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:$PATH"
     }
     stages {
-        stage('Build Docker Images') {
+        stage('Check Docker') {
             steps {
                 script {
-                    sh """
-                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_1} --build-arg PORT=${PORT_1} -t container1:latest .
-                    """
-                    sh """
-                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_2} --build-arg PORT=${PORT_2} -t container2:latest .
-                    """
-                    sh """
-                        docker build --build-arg RESPONSE_MESSAGE=${RESPONSE_3} --build-arg PORT=${PORT_3} -t container3:latest .
-                    """
+                    sh 'which docker || echo "Docker not found"'
+                    sh 'docker version'
                 }
             }
         }
-        stage('Run Containers') {
+        stage('Run Hello World') {
             steps {
                 script {
-                    sh 'docker run -d -p 3000:3000 container1:latest'
-                    sh 'docker run -d -p 3001:3001 container2:latest'
-                    sh 'docker run -d -p 3002:3002 container3:latest'
-                }
-            }
-        }
-        stage('Verify Containers') {
-            steps {
-                script {
-                    sleep 10
-                    sh 'curl http://localhost:3000'
-                    sh 'curl http://localhost:3001'
-                    sh 'curl http://localhost:3002'
+                    sh 'docker run hello-world'
                 }
             }
         }
